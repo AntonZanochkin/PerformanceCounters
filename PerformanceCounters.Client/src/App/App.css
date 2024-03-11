@@ -1,0 +1,26 @@
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100vh;
+}
+
+.app {
+  display: flex;
+  background-color: aquamarine;
+  background-color: #4b4b4b;
+  height: 100vh;
+}
+
+.app > :first-child {
+  flex: 0 0 300px;
+}
+
+.app > :not(:first-child) {
+  flex: 1;
+  overflow-y: auto;
+}

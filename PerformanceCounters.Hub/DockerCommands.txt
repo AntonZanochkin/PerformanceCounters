@@ -1,0 +1,3 @@
+﻿docker build -t performance-counters-hub-image .
+docker run --rm -it -p 5068:8080 -p 1433:1433 performance-counters-hub-image
+docker run --rm -it -p 3000:3000 performance-counters-client

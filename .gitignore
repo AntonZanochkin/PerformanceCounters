@@ -1,0 +1,16 @@
+/PerformanceCounters.Client/node_modules
+/.vs
+/packages
+/PerformanceCounters.Hub/obj
+/PerformanceCounters.Hub/bin
+/PerformanceCounters.SampleConsole/obj
+/PerformanceCounters.SampleConsole/bin
+/PerformanceCounters.Transmitter/obj
+/PerformanceCounters.Transmitter/bin
+/PerformanceCounters.Transmitter.Tests/obj
+/PerformanceCounters.Transmitter.Tests/bin
+/PerformanceCounters.Client/counters4-all-app/.vscode
+/PerformanceCounters.Client/.vscode
+/PerformanceCounters.Transmitter.Tests/.vs
+/.github
+/TestResults

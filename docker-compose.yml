@@ -1,0 +1,39 @@
+﻿version: '3.8'
+
+services:
+  performance-counters-client:
+    build: ./PerformanceCounters.Client
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_HUB_ADDRESS=http://localhost:5068/hub/client
+    depends_on:
+      - performance-counters-hub
+    networks:
+      - backend
+
+  performance-counters-hub:
+    build: ./PerformanceCounters.Hub
+    ports:
+      - "5068:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOCKER_CONNECTION_STRING=Data Source=db,1433;Database=PerformanceCountersHub;User Id=SA;Password=A&VeryComplex123Password;TrustServerCertificate=True;
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: "mssql_db"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=A&VeryComplex123Password
+      - MSSQL_PID=Express
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:
