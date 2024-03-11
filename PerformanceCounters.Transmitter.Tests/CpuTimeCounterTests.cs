@@ -29,7 +29,7 @@ namespace PerformanceCounters.Transmitter.Tests
       var cpuTimeCounter = new CpuTimeCounter(testName);
 
       // Act
-      CpuLoader.LoadCpu(loadCpuSec * 1000);
+      CpuLoader.LoadCpuSync(loadCpuSec * 1000);
       cpuTimeCounter.Dispose();
 
       // Assert
@@ -121,7 +121,7 @@ namespace PerformanceCounters.Transmitter.Tests
       var cpuTimeCounter = new CpuTimeCounter(testName);
 
       // Act
-      CpuLoader.LoadCpu((int)(loadCpuSec / 2 * 1000));
+      CpuLoader.LoadCpuSync((int)(loadCpuSec / 2 * 1000));
       await Task.Delay((int)(sleepCpuSec / 2 * 1000));
       Thread.Sleep((int)(sleepCpuSec / 2 * 1000));
       await CpuLoader.LoadCpuAsync((int)(loadCpuSec / 2 * 1000));
@@ -141,8 +141,8 @@ namespace PerformanceCounters.Transmitter.Tests
     public async Task CpuTimeCounter_LoadCpuParentAndChild_4_2_LoadCpuChild_2_1()
     {
       // Arrange
-      var parentTestName = "LoadCpu (parent + child) 4 sec, sleep 2 sec";
-      var childTestName = "LoadCpu 2 sec (child), sleep 1 sec";
+      var parentTestName = "LoadCpuSync (parent + child) 4 sec, sleep 2 sec";
+      var childTestName = "LoadCpuSync 2 sec (child), sleep 1 sec";
       var parentLoadCpuSec = 4d;
       var parentSleepCpuSec = 2d;
       var childLoadCpuSec = 2d;
@@ -151,14 +151,14 @@ namespace PerformanceCounters.Transmitter.Tests
       // Act
       var parentCpuTimeCounter = new CpuTimeCounter(parentTestName);
       
-      CpuLoader.LoadCpu(1000);
+      CpuLoader.LoadCpuSync(1000);
       Thread.Sleep(500);
       await CpuLoader.LoadCpuAsync(1000);
       await Task.Delay(500);
 
       var childCpuTimeCounter = new CpuTimeCounter(childTestName);
         
-      CpuLoader.LoadCpu(1000);
+      CpuLoader.LoadCpuSync(1000);
       Thread.Sleep(500);
       await CpuLoader.LoadCpuAsync(1000);
       await Task.Delay(500);

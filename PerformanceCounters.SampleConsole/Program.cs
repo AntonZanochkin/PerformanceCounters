@@ -17,36 +17,36 @@ static async void TimerCallback(object? state)
 {
   var rnd = new Random();
 
-  using (new CpuTimeCounter("LoadCpu 4 sec, sleep 6 sec"))
+  using (new CpuTimeCounter("LoadCpuSync 4 sec, sleep 6 sec"))
   {
-    CpuLoader.LoadCpu(1000);
+    CpuLoader.LoadCpuSync(1000);
     Thread.Sleep(1000);
     await Task.Delay(5000);
     await CpuLoader.LoadCpuAsync(3000);
   }
 
-  using (new CpuTimeCounter("LoadCpu (parent + child) 4 sec, sleep 2 sec"))
+  using (new CpuTimeCounter("LoadCpuSync (parent + child) 4 sec, sleep 2 sec"))
   {
-    CpuLoader.LoadCpu(1000);
+    CpuLoader.LoadCpuSync(1000);
     Thread.Sleep(500);
     await CpuLoader.LoadCpuAsync(1000);
     await Task.Delay(500);
 
-    using (new CpuTimeCounter("LoadCpu 2 sec (child), sleep 1 sec"))
+    using (new CpuTimeCounter("LoadCpuSync 2 sec (child), sleep 1 sec"))
     {
-      CpuLoader.LoadCpu(1000);
+      CpuLoader.LoadCpuSync(1000);
       Thread.Sleep(500);
-      CpuLoader.LoadCpu(1000);
+      CpuLoader.LoadCpuSync(1000);
       await Task.Delay(500);
     }
   }
 
-  using (new CpuTimeCounter("Random LoadCpu (parent + child) from 2 to 10 sec"))
+  using (new CpuTimeCounter("Random LoadCpuSync (parent + child) from 2 to 10 sec"))
   {
     await CpuLoader.LoadCpuAsync(rnd.Next(1 * 1000, 5 * 1000));
     await Task.Delay(rnd.Next(1 * 1000, 5 * 1000));
 
-    using (new CpuTimeCounter("Random LoadCpu (child)  from 1 to 5 sec"))
+    using (new CpuTimeCounter("Random LoadCpuSync (child)  from 1 to 5 sec"))
     {
       await CpuLoader.LoadCpuAsync(rnd.Next(1 * 1000, 5 * 1000));
       await Task.Delay(rnd.Next(1 * 1000, 5 * 1000));

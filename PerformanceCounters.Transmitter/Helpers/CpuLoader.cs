@@ -6,7 +6,7 @@ namespace PerformanceCounters.Transmitter.Helpers
 {
   public static class CpuLoader
   {
-    public static void LoadCpu(int milliseconds)
+    public static void LoadCpuSync(int milliseconds)
     {
       var sw = Stopwatch.StartNew();
       while (sw.ElapsedMilliseconds <= milliseconds)
@@ -18,7 +18,7 @@ namespace PerformanceCounters.Transmitter.Helpers
 
     public static async Task LoadCpuAsync(int milliseconds)
     {
-      await Task.Run(() => LoadCpu(milliseconds));
+      await Task.Run(() => LoadCpuSync(milliseconds));
     }
 
     public static void LoadCpuKernel(int milliseconds)
