@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using PerformanceCounters.Transmitter.Services;
 
 namespace PerformanceCounters.Transmitter.Counters.StopwatchCounter
 {
-  public class StopwatchCounter : IDisposable
+    public class StopwatchCounter : IDisposable
   {
     private readonly string _name;
     private readonly Stopwatch _stopwatch;

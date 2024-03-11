@@ -3,7 +3,7 @@ using PerformanceCounters.Transmitter.Counters;
 
 namespace PerformanceCounters.Transmitter.Dto
 {
-  public class AddCounterDto
+    public class AddCounterDto
   {
     public DateTime DateTime { get; set; }
     public CounterType Type { get; set; }

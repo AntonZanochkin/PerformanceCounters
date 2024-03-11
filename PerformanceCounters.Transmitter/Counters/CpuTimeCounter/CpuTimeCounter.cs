@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using PerformanceCounters.Transmitter.Services;
 
 namespace PerformanceCounters.Transmitter.Counters.CpuTimeCounter
 {
-  public class CpuTimeCounter : IDisposable
+    public class CpuTimeCounter : IDisposable
   {
     private static readonly ThreadLocal<List<ThreadMetric>> ThreadMetrics = new ThreadLocal<List<ThreadMetric>>();
     private static long _lastCounterObjectId;

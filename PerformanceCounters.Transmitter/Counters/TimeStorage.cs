@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PerformanceCounters.Transmitter.Counters
 {
-  public class TimeStorage<T> : ITimeStorage where T: ICounterData, new()
+    public class TimeStorage<T> : ITimeStorage where T: ICounterData, new()
   {
     public CounterType Type { get; }
 

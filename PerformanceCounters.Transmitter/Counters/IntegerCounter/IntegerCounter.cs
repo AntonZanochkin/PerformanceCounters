@@ -1,8 +1,9 @@
 ﻿using System;
+using PerformanceCounters.Transmitter.Services;
 
 namespace PerformanceCounters.Transmitter.Counters.IntegerCounter
 {
-  public class IntegerCounter : IDisposable
+    public class IntegerCounter : IDisposable
   {
     private readonly string _name;
 

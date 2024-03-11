@@ -2,7 +2,7 @@
 
 namespace PerformanceCounters.Transmitter.Counters
 {
-  public interface ITimeStorage
+    public interface ITimeStorage
   {
     CounterType Type { get; }
     void DeleteCountersUpToTime(DateTime endTime);

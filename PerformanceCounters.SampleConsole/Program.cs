@@ -1,8 +1,8 @@
-﻿using PerformanceCounters.Transmitter;
-using PerformanceCounters.Transmitter.Counters.CpuTimeCounter;
+﻿using PerformanceCounters.Transmitter.Counters.CpuTimeCounter;
 using PerformanceCounters.Transmitter.Counters.IntegerCounter;
 using PerformanceCounters.Transmitter.Counters.StopwatchCounter;
 using PerformanceCounters.Transmitter.Helpers;
+using PerformanceCounters.Transmitter.Services;
 
 var transferService = new TransferService("http://localhost:5068/api/v1", "Server 1", "Test application 4");
 transferService.Run();
