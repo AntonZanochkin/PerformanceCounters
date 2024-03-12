@@ -4,7 +4,7 @@ using PerformanceCounters.Transmitter.Counters.StopwatchCounter;
 using PerformanceCounters.Transmitter.Helpers;
 using PerformanceCounters.Transmitter.Services;
 
-var transferService = new TransferService("http://localhost:5068/api/v1", "Server 1", "Test application 4");
+var transferService = new TransferService("http://localhost:5068/api/v1", "Server 4", "Test application 1");
 transferService.Run();
 
 var timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
@@ -61,11 +61,11 @@ static async void TimerCallback(object? state)
 
   await Task.Delay(30000);
 
-  using (new IntegerCounter("IntegerCounter from 1 to 5 sec").IncrementBy(rnd.Next(1 * 1000, 5 * 1000)))
+  using (new IntegerCounter("IntegerCounter from 1000 to 5000").IncrementBy(rnd.Next(1000, 5000)))
   {
   }
 
-  using (new IntegerCounter("IntegerCounter from 5 to 30 sec").IncrementBy(rnd.Next(1 * 5000, 5 * 30000)))
+  using (new IntegerCounter("IntegerCounter from 5000 to 30000").IncrementBy(rnd.Next(1000, 30000)))
   {
   }
 
