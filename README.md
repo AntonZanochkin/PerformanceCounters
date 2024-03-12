@@ -99,8 +99,8 @@ using (new StopwatchCounter("StopwatchCounter from 1 to 5 sec"))
    - Connect the transmitter to the hub using the provided code snippet.
 
 ```csharp
-   var transferService = new TransferService("http://localhost:5068/api/v1", "Server 1", "Application 1");
-   transferService.Run();
+     var transferService = new TransferService("http://localhost:5068/api/v1", "Server 1", "Application 1");
+     transferService.Run();
 ```
 
 4. Open your web browser and navigate to http://localhost:3000.

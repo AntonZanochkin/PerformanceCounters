@@ -4,7 +4,7 @@ using PerformanceCounters.Transmitter.Counters.StopwatchCounter;
 using PerformanceCounters.Transmitter.Helpers;
 using PerformanceCounters.Transmitter.Services;
 
-var transferService = new TransferService("http://localhost:5068/api/v1", "Server 4", "Test application 1");
+var transferService = new TransferService("http://localhost:5068/api/v1", "Server 1", "Test application 1");
 transferService.Run();
 
 var timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
