@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./SideBar.css";
 import { useSelector, useDispatch } from "react-redux";
-import { selectDevices, setDevices, addDevice, addProcess, addCounterNames, updateCounters } from "../../Redux/devicesSlice";
+import { selectDevices, setDevices, addDevice, addProcess, addCounterNames, updateCounters } from "../../Redux/DevicesSlice.ts";
 import { selectIsConnected, setIsConnected } from "../../Redux/signalRSlice.js";
-import DropdownMenu from "./DropdownMenu";
-import Connector from "../../API/signalr-connection.tsx";
+import DropdownMenu from "./DropdownMenu.js";
+import Connector from "../../API/SignalrConnection.ts";
 
 export const SideBar = () => {
   const connector = Connector();
@@ -14,11 +14,12 @@ export const SideBar = () => {
   const isConnected = useSelector(selectIsConnected());
 
   useEffect(() => {
-    connector.events.setDevices((devices) => dispatch(setDevices(devices)));
-    connector.events.addDevice((device) => dispatch(addDevice(device)));
-    connector.events.addProcess((deviceId, addProcessDto) => dispatch(addProcess({ deviceId, addProcessDto })));
+    connector.events.addDevice(dto => dispatch(addDevice(dto)));
+    connector.events.setDevices(dto => dispatch(setDevices(dto)));
+
+    connector.events.addProcess((deviceId, processId, processName) => dispatch(addProcess({ deviceId, processId, processName})));
     connector.events.addCounterNames((deviceId, processId, counterType, newCounterNames) => dispatch(addCounterNames({ deviceId, processId, counterType, newCounterNames })));
-    connector.events.updateCounters((deviceId, processId, updateDtoList) => dispatch(updateCounters({ deviceId, processId, updateDtoList })));
+    connector.events.updateCounters((deviceId, processId, counters) => dispatch(updateCounters({ deviceId, processId, counters })));
 
     connector.connectStart(() => {
       dispatch(setIsConnected(true));

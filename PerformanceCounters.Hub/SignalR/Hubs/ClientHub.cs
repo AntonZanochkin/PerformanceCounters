@@ -9,8 +9,8 @@ namespace PerformanceCounters.Hub.SignalR.Hubs
   {
     public async Task GetDevices([FromServices] DeviceService deviceService)
     {
-      var response = deviceService.BuildSetDevicesDto();
-      await Clients.Caller.SendAsync("SetDevices", response);
+      var dto = deviceService.BuildSetDevicesDto();
+      await Clients.Caller.SendAsync("SetDevices", dto);
     }
 
     public async Task SubscribeCounter([FromServices] CounterService counterService, [FromServices] CounterSignalService counterSignalService, int deviceId, int processId, string counterTypeString, string counterName, int revision)

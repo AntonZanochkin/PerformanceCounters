@@ -14,15 +14,9 @@ namespace PerformanceCounters.Hub.Services.SignalR
       _hubContext = hubContext;
     }
 
-    public async Task AddDeviceAsync(DeviceEntity deviceEntity)
+    public async Task AddDeviceAsync(int id, string name)
     {
-      var dto = new SetDeviceDto
-      {
-        Id = deviceEntity.Id,
-        Name = deviceEntity.Name,
-      };
-
-      await _hubContext.Clients.All.SendAsync("addDevice", dto);
+      await _hubContext.Clients.All.SendAsync("addDevice", new AddDeviceDto { Id = id, Name = name });
     }
 
     public async Task DeleteDeviceAsync(int deviceId)

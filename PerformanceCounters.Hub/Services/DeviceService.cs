@@ -30,7 +30,7 @@ namespace PerformanceCounters.Hub.Services
       _context.Device.Add(deviceEntity);
       await _context.SaveChangesAsync();
       _dbCacheService.TryAddDevice(deviceEntity.Id, deviceEntity.Name);
-      await _deviceSignalService.AddDeviceAsync(deviceEntity);
+      await _deviceSignalService.AddDeviceAsync(deviceEntity.Id, deviceEntity.Name);
       return deviceEntity;
     }
 

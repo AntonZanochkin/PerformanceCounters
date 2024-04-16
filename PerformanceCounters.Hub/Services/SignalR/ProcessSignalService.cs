@@ -13,13 +13,7 @@ namespace PerformanceCounters.Hub.Services.SignalR
     }
     public async Task AddProcessAsync(int deviceId, int processId, string processName)
     {
-      var dto = new ProcessDto
-      {
-        Id = processId,
-        Name = processName,
-      };
-
-      await _hubContext.Clients.All.SendAsync("addProcess", deviceId, dto);
+      await _hubContext.Clients.All.SendAsync("addProcess", deviceId, processId, processName);
     }
 
     public async Task DeleteProcessAsync(int processId)

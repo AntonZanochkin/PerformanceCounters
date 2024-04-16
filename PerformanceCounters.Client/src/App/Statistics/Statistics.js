@@ -3,7 +3,7 @@ import "./Statistics.css";
 import { useLocation } from "react-router-dom";
 import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/uiSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { selectProcess } from "../../Redux/devicesSlice";
+import { selectProcess } from "../../Redux/DevicesSlice.ts";
 import { Counter } from "./Counter/Counter.js";
 
 export const Statistics = () => {

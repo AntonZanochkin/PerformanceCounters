@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { VegaLite } from "react-vega";
 import { useSelector, useDispatch } from "react-redux";
 // import { GetIntegerCountersByName } from "../../../API/apiManager";
-import { selectCounters as selectCounters } from "../../../Redux/devicesSlice.js";
+import { selectCounters as selectCounters } from "../../../Redux/DevicesSlice.ts";
 import { selectIsConnected } from "../../../Redux/signalRSlice.js";
-import Connector from "../../../API/signalr-connection.tsx";
+import Connector from "../../../API/SignalrConnection.ts";
 import { integerSpec, stopwatchSpec, cpuTimeSpec, vegaLiteSpec } from "./VegaLiteSpec.js";
 
 export const Chart = ({ deviceId, processId, type, counterName }) => {
