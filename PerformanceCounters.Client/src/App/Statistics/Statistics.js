@@ -3,7 +3,7 @@ import "./Statistics.css";
 import { useLocation } from "react-router-dom";
 import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/uiSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { selectProcess } from "../../Redux/DevicesSlice.ts";
+import { selectDeviceAndProcessOrDefault } from "../../Redux/DevicesSlice.ts"
 import { Counter } from "./Counter/Counter.js";
 
 export const Statistics = () => {
@@ -21,7 +21,7 @@ export const Statistics = () => {
   if (useSelector(selectActiveDeviceId) === undefined) dispatch(setActiveDeviceId(deviceId));
   if (useSelector(selectActiveProcessId) === undefined) dispatch(setActiveProcessId(processId));
 
-  const processStore = useSelector(selectProcess(deviceId, processId));
+  const {process} = useSelector(selectDeviceAndProcessOrDefault(deviceId, processId));
 
   const handleItemClick = useCallback(
     (type) => {
@@ -34,8 +34,8 @@ export const Statistics = () => {
     <div className="statisticsDiv">
       <div className="navigation-panel">
         <ul className="ul">
-          {processStore &&
-            Object.entries(processStore.counterNamesByType).map(([type, names]) => (
+          {process &&
+            Object.entries(process.counterNamesByType).map(([type, names]) => (
               <li key={type} className={activeCounterType === type ? "li selected" : "li"} onClick={() => handleItemClick(type)}>
                 {type}
                 <span className={"badge-counter "}>{names.length}</span>
@@ -43,7 +43,7 @@ export const Statistics = () => {
             ))}
         </ul>
       </div>
-      <div>{activeCounterType && <Counter deviceId={deviceId} processId={processId} type={activeCounterType} counterNames={processStore.counterNamesByType[activeCounterType]} />}</div>
+      <div>{activeCounterType && <Counter deviceId={deviceId} processId={processId} type={activeCounterType} counterNames={process.counterNamesByType[activeCounterType]} />}</div>
     </div>
   );
 };

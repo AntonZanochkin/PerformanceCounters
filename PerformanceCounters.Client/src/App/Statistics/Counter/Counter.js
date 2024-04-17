@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Collapsible from "../../Collapsible/Collapsible.js";
 import "./Counter.css";
-import { Chart } from "../Chart/Chart.js";
+import { Chart } from "../Chart/Chart.tsx";
 
 export const Counter = ({ deviceId, processId, type, counterNames }) => {
   return (

@@ -50,7 +50,7 @@ namespace PerformanceCounters.Hub.Services.SignalR
       connectionSubscribe.CounterRevisionByName.TryRemove(counterName, out var revision);
     }
 
-    public void UpdateSubscribeRevision(ConnectionSubscribe connectionSubscribe, List<AddCounterDto> updateDtoList)
+    public void UpdateSubscribeRevision(ConnectionSubscribe connectionSubscribe, List<UpdateCounterDto> updateDtoList)
     {
       foreach (var groupByName in updateDtoList.GroupBy(x => x.Name))
       {
@@ -79,8 +79,14 @@ namespace PerformanceCounters.Hub.Services.SignalR
             if(!subscribe.CounterRevisionByName.TryGetValue(counterEntity.Name, out var revision))
               continue;
 
-            var addCounterDto = AddCounterDto.Create(counterEntity);
-            await _hubContext.Clients.Client(connectionId).SendAsync("updateCounters", deviceId, processId, new [] { addCounterDto });
+            var addCounterDto = UpdateCounterDto.Create(counterEntity);
+
+            await _hubContext.Clients.Client(connectionId).SendAsync("updateCounters", new UpdateCountersDto()
+            {
+              DeviceId = deviceId,
+              ProcessId = processId,
+              Counters = new List<UpdateCounterDto> { addCounterDto }
+            });
             
             subscribe.CounterRevisionByName.AddOrUpdate(counterEntity.Name, 
               _ => addCounterDto.Id,

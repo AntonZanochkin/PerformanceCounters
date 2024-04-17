@@ -10,19 +10,20 @@ export namespace StoreType {
       id: number;
       name: string;
       counters: Counter[];
-      counterNamesByType: CounterNamesByType;
+      counterNamesByType: EnumDictionary<CounterType, string[]>;
     };
   
     export type Counter = {
       id: number;
-      type: string;
+      type: CounterType;
       name: string;
       dateTime: string;
       valueJson: string;
+      value:number;
     };
   
-    export interface CounterNamesByType {
-      [counterType: string]: string[];
-    }
+    // export interface CounterNamesByType {
+    //   [counterType: CounterType]: string[];
+    // }
   }
   

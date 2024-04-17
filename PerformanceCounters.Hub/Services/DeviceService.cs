@@ -34,8 +34,9 @@ namespace PerformanceCounters.Hub.Services
       return deviceEntity;
     }
 
-    public List<SetDeviceDto> BuildSetDevicesDto()
+    public SetDevicesDto BuildSetDevicesDto()
     {
+      var dto = new SetDevicesDto();
       var cache = _dbCacheService.GetDevices();
 
       var response = cache
@@ -46,7 +47,8 @@ namespace PerformanceCounters.Hub.Services
           Processes = dKvP.Value.Processes.Select(pKvp => pKvp.Value.BuildDto()).ToList()
         }).ToList();
 
-      return response;
+      dto.Devices = response;
+      return dto;
     }
   }
 }

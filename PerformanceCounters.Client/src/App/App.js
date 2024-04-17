@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Statistics } from "./Statistics/Statistics";
-import { SideBar } from "./SideBar/SideBar";
+import { SideBar } from "./SideBar/SideBar.tsx";
 import { Provider } from "react-redux";
 import store from "../Redux/store";
 

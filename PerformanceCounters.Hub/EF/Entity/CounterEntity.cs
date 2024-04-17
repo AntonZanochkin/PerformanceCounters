@@ -15,7 +15,7 @@ namespace PerformanceCounters.Hub.EF.Entity
     public string Name { get; set; }
     public string ValueJson { get; set; }
 
-    public static CounterEntity Create(int processId, AddCounterDto addCounterDto)
+    public static CounterEntity Create(int processId, UpdateCounterDto addCounterDto)
     {
       return new CounterEntity
       {

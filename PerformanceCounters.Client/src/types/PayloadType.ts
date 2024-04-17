@@ -11,9 +11,9 @@ export namespace PayloadType {
   export interface AddProcess extends DtoType.AddProcess {
   }
   
-  export interface AddCounterNames extends DtoType.AddProcess {
+  export interface AddCounterNames extends DtoType.AddCounterNames {
   }
   
-  export interface UpdateCounters extends DtoType. AddProcess{
+  export interface UpdateCounters extends DtoType.UpdateCounters{
   }
 }

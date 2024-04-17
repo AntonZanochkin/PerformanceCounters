@@ -22,7 +22,7 @@ namespace PerformanceCounters.Hub.Services
       _counterSignalService = counterSignalService;
     }
 
-    public async Task AddCountersAsync(int deviceId, int processId, List<AddCounterDto> addCountersDtoList)
+    public async Task AddCountersAsync(int deviceId, int processId, List<UpdateCounterDto> addCountersDtoList)
     {
       var counterEntityList = addCountersDtoList.Select(dto => CounterEntity.Create(processId, dto)).ToList();
       await _dbContext.Counter.AddRangeAsync(counterEntityList);
@@ -46,17 +46,17 @@ namespace PerformanceCounters.Hub.Services
       await _counterSignalService.SendCountersToSubscribers(deviceId, processId, groupEntityListByCounterType);
     }
 
-    public async Task<List<AddCounterDto>> SelectCountersDtoAsync(int processId, CounterType counterType, string counterName, int revision)
+    public async Task<List<UpdateCounterDto>> SelectCountersDtoAsync(int processId, CounterType counterType, string counterName, int revision)
     {
       var addCounterDtoList = await _dbContext.Counter.Where(n => n.ProcessEntityId == processId && n.Type == counterType && n.Name == counterName && n.Id > revision)
-        .Select(n => AddCounterDto.Create(n)).ToListAsync();
+        .Select(n => UpdateCounterDto.Create(n)).ToListAsync();
 
       return addCounterDtoList;
     }
 
-    public async Task<List<AddCounterDto>> LoadUpdateDtoAsync(ConnectionSubscribe subscribe)
+    public async Task<List<UpdateCounterDto>> LoadUpdateDtoAsync(ConnectionSubscribe subscribe)
     {
-      var dtoList = new List<AddCounterDto>();
+      var dtoList = new List<UpdateCounterDto>();
       foreach (var kVp in subscribe.CounterRevisionByName)
       {
         var counterName = kVp.Key;

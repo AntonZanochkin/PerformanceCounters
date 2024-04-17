@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using PerformanceCounters.Hub.Dto.Counter;
 using PerformanceCounters.Hub.Services;
 using PerformanceCounters.Hub.Services.SignalR;
 
@@ -19,11 +20,16 @@ namespace PerformanceCounters.Hub.SignalR.Hubs
         throw new ArgumentException(counterTypeString);
       
       var userCounterSubscribe = counterSignalService.SubscribeConnection(Context.ConnectionId, deviceId, processId, counterType, counterName, revision);
-      var updateDtoList = await counterService.LoadUpdateDtoAsync(userCounterSubscribe);
-      counterSignalService.UpdateSubscribeRevision(userCounterSubscribe, updateDtoList);
+      var uopdateCounters = await counterService.LoadUpdateDtoAsync(userCounterSubscribe);
+      counterSignalService.UpdateSubscribeRevision(userCounterSubscribe, uopdateCounters);
 
-      if (updateDtoList.Count > 0)
-        await Clients.Client(Context.ConnectionId).SendAsync("updateCounters", deviceId, processId, updateDtoList);
+      if (uopdateCounters.Count > 0)
+        await Clients.Client(Context.ConnectionId).SendAsync("updateCounters", new UpdateCountersDto()
+        {
+          DeviceId = deviceId,
+          ProcessId = processId,
+          Counters = uopdateCounters
+        });
     }
 
     public void UnsubscribeCounter([FromServices] CounterSignalService counterSignalService, int deviceId, int processId, string counterTypeString, string counterName)

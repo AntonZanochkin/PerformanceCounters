@@ -2,7 +2,7 @@
 
 namespace PerformanceCounters.Hub.Dto.Counter
 {
-  public class AddCounterDto
+  public class UpdateCounterDto
   {
     public int Id { get; set; }
     public DateTime DateTime { get; set; }
@@ -10,9 +10,9 @@ namespace PerformanceCounters.Hub.Dto.Counter
     public string Name { get; set; }
     public string ValueJson { get; set; }
 
-    public static AddCounterDto Create(CounterEntity counterEntity)
+    public static UpdateCounterDto Create(CounterEntity counterEntity)
     {
-      return new AddCounterDto
+      return new UpdateCounterDto
       {
         Id = counterEntity.Id,
         DateTime = counterEntity.DateTime,

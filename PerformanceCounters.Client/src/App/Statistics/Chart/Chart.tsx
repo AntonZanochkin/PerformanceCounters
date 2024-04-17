@@ -1,45 +1,51 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { VegaLite } from "react-vega";
 import { useSelector, useDispatch } from "react-redux";
-// import { GetIntegerCountersByName } from "../../../API/apiManager";
-import { selectCounters as selectCounters } from "../../../Redux/DevicesSlice.ts";
+import { selectCounters } from "../../../Redux/DevicesSlice.ts";
 import { selectIsConnected } from "../../../Redux/signalRSlice.js";
 import Connector from "../../../API/SignalrConnection.ts";
 import { integerSpec, stopwatchSpec, cpuTimeSpec, vegaLiteSpec } from "./VegaLiteSpec.js";
+import { CounterType } from "../../../types/CounterType.ts";
 
-export const Chart = ({ deviceId, processId, type, counterName }) => {
+type Props = {
+  deviceId: number;
+  processId: number;
+  type: CounterType;
+  counterName: string;
+};
+
+export const Chart = ({ deviceId, processId, type, counterName }: Props) => {
   const connector = Connector();
-  const [width, setWidth] = useState([]);
+  const [width, setWidth] = useState<number>(0);
 
   const vegaLiteSpecMemo = useMemo(() => {
     let spec;
 
     switch (type) {
-      case "Integer": {
+      case CounterType.Integer: {
         spec = integerSpec();
         break;
       }
-      case "Stopwatch": {
+      case CounterType.Stopwatch: {
         spec = stopwatchSpec();
         break;
       }
-      case "CpuTime": {
+      case CounterType.CpuTime: {
         spec = cpuTimeSpec();
         break;
       }
     }
 
-    console.log("spec", spec);
     return spec;
   }, [vegaLiteSpec]);
 
-  const componentRef = useRef(null);
+  const componentRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
 
   const isConnected = useSelector(selectIsConnected());
-
-  const countersStateRef = useRef({ counters: [], revision: -1 });
+  
+  const countersStateRef = useRef<{ counters: any, revision: number }>({ counters: [], revision: -1 });
   const countersStore = useSelector(selectCounters(deviceId, processId, type, counterName, countersStateRef.current.revision));
   const revision = countersStore && countersStore.length > 0 ? Math.max(...countersStore.map((c) => c.id)) : -1;
 
@@ -49,15 +55,16 @@ export const Chart = ({ deviceId, processId, type, counterName }) => {
 
     const newCounters = countersStore.map((c) => ({ ...c }));
 
+    console.log(type);
     switch (type) {
-      case "Stopwatch":
-      case "Integer": {
+      case CounterType.Stopwatch:
+      case CounterType.Integer: {
         newCounters.map((c) => {
           countersStateRef.current.counters.push({ ...c });
         });
         break;
       }
-      case "CpuTime": {
+      case CounterType.CpuTime: {
         newCounters.map((c) => {
           countersStateRef.current.counters.push({ ...c, value: c.userTime + c.kernelTime, timeType: "Cpu" });
           countersStateRef.current.counters.push({ ...c, value: c.sleepTime, timeType: "Sleep" });
@@ -81,11 +88,13 @@ export const Chart = ({ deviceId, processId, type, counterName }) => {
 
   //Width
   useEffect(() => {
-    const getWidth = () => {
+    const getWidth = ():number => {
       if (componentRef.current) {
         const width = componentRef.current.clientWidth;
         return width;
       }
+
+      return 0;
     };
 
     const width = getWidth();

@@ -16,10 +16,9 @@ export const SideBar = () => {
   useEffect(() => {
     connector.events.addDevice(dto => dispatch(addDevice(dto)));
     connector.events.setDevices(dto => dispatch(setDevices(dto)));
-
-    connector.events.addProcess((deviceId, processId, processName) => dispatch(addProcess({ deviceId, processId, processName})));
-    connector.events.addCounterNames((deviceId, processId, counterType, newCounterNames) => dispatch(addCounterNames({ deviceId, processId, counterType, newCounterNames })));
-    connector.events.updateCounters((deviceId, processId, counters) => dispatch(updateCounters({ deviceId, processId, counters })));
+    connector.events.addProcess(dto => dispatch(addProcess(dto)));
+    connector.events.addCounterNames(dto => dispatch(addCounterNames(dto)));
+    connector.events.updateCounters(dto => dispatch(updateCounters(dto)));
 
     connector.connectStart(() => {
       dispatch(setIsConnected(true));

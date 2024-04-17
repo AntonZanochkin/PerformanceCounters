@@ -15,7 +15,7 @@ namespace PerformanceCounters.Hub.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromQuery] int deviceId, [FromQuery] int processId, [FromBody] List<AddCounterDto> dto)
+    public async Task<IActionResult> Add([FromQuery] int deviceId, [FromQuery] int processId, [FromBody] List<UpdateCounterDto> dto)
     {
       await _counterService.AddCountersAsync(deviceId, processId, dto);
       return Ok("Success");

@@ -20,7 +20,7 @@ export namespace DtoType {
       export interface Process {
         id: number;
         name: string;
-        counterNamesByType: StoreType.CounterNamesByType;
+        counterNamesByType: EnumDictionary<CounterType, string[]>;
       }
 
       export interface AddProcess {
@@ -32,7 +32,7 @@ export namespace DtoType {
       export interface AddCounterNames {
         deviceId: number;
         processId: number;
-        counterType: string;
+        counterType: CounterType;
         newCounterNames: Array<string>;
       }
       
