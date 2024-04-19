@@ -45,9 +45,18 @@ export const Chart = ({ deviceId, processId, type, counterName }: Props) => {
 
   const isConnected = useSelector(selectIsConnected());
   
-  const countersStateRef = useRef<{ counters: any, revision: number }>({ counters: [], revision: -1 });
+  const countersStateRef = useRef<{ counters: ViewCounter[], revision: number }>({ counters: [], revision: -1 });
   const countersStore = useSelector(selectCounters(deviceId, processId, type, counterName, countersStateRef.current.revision));
   const revision = countersStore && countersStore.length > 0 ? Math.max(...countersStore.map((c) => c.id)) : -1;
+
+  type ViewCounter = {
+    id: number;
+    type: CounterType;
+    name: string;
+    dateTime: string;
+    value:number;
+    timeType?:string;
+  };
 
   //countersStore.filter
   useEffect(() => {
@@ -60,14 +69,14 @@ export const Chart = ({ deviceId, processId, type, counterName }: Props) => {
       case CounterType.Stopwatch:
       case CounterType.Integer: {
         newCounters.map((c) => {
-          countersStateRef.current.counters.push({ ...c });
+          countersStateRef.current.counters.push({ id:c.id, type:c.type, name:c.name, dateTime:c.dateTime, value:c.value ?? 0});
         });
         break;
       }
       case CounterType.CpuTime: {
         newCounters.map((c) => {
-          countersStateRef.current.counters.push({ ...c, value: c.userTime + c.kernelTime, timeType: "Cpu" });
-          countersStateRef.current.counters.push({ ...c, value: c.sleepTime, timeType: "Sleep" });
+          countersStateRef.current.counters.push({ id:c.id, type:c.type, name:c.name, dateTime:c.dateTime, value:(c.userTime ?? 0) + (c.kernelTime ?? 0), timeType: "Cpu"});
+          countersStateRef.current.counters.push({ id:c.id, type:c.type, name:c.name, dateTime:c.dateTime, value:c.sleepTime ?? 0, timeType: "Sleep"});
         });
         break;
       }

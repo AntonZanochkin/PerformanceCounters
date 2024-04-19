@@ -1,3 +1,5 @@
+import { CounterType, EnumDictionary } from "./CounterType.ts";
+
 export namespace StoreType {
    
     export type Device = {
@@ -19,7 +21,10 @@ export namespace StoreType {
       name: string;
       dateTime: string;
       valueJson: string;
-      value:number;
+      value?:number;
+      userTime?:number;
+      kernelTime?:number;
+      sleepTime?:number;
     };
   
     // export interface CounterNamesByType {

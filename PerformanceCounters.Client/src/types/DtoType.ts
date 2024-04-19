@@ -1,4 +1,5 @@
 import { StoreType } from '../types/StoreType.ts';
+import { CounterType, EnumDictionary } from "./CounterType.ts";
 
 export namespace DtoType {
   
