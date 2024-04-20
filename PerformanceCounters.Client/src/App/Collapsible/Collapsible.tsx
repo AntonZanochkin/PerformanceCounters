@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
 import "./Collapsible.css";
 
+type Props = {
+  label: string;
+  children:React.ReactNode
+};
 
-
-const Collapsible = (props) => {
-  const [open, setOpen] = useState(false);
-  const contentRef = useRef();
+const Collapsible = (props:Props) => {
+  const [open, setOpen] = useState<boolean>(false);
 
   const toggle = () => {
     setOpen(!open);

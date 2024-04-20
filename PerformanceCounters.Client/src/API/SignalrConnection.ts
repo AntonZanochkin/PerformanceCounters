@@ -59,7 +59,7 @@ class Connector {
     };
   }
 
-  public connectStart = (onConnect) => {
+  public startConnect = (onConnect:() => void):void => {
     this.connection
       .start()
       .then(() => {
@@ -73,11 +73,11 @@ class Connector {
     this.connection.send("GetDevices");
   };
 
-  public sendSubscribeCounter = (deviceId:number, processId:number, type:CounterType, conterName:string, revision:number) => {
+  public sendSubscribeCounter = (deviceId:number, processId:number, type:CounterType, conterName:string, revision:number):void => {
     this.connection.send("SubscribeCounter", deviceId, processId, type, conterName, revision);
   };
 
-  public sendUnsubscribeConuter = (deviceId:number, processId:number, type:CounterType, counterName:string) => {
+  public sendUnsubscribeConuter = (deviceId:number, processId:number, type:CounterType, counterName:string):void => {
     this.connection.send("UnsubscribeCounter", deviceId, processId, type, counterName);
   };
 
