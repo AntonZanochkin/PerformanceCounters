@@ -1,8 +1,6 @@
 import * as signalR from "@microsoft/signalr";
-import { delay } from "@reduxjs/toolkit/dist/utils";
-import { StoreType } from '../types/StoreType.ts';
-import { PayloadType } from '../types/PayloadType.ts';
 import { DtoType } from '../types/DtoType.ts';
+import { CounterType } from '../types/CounterType.ts';
 
 if (process.env.REACT_APP_HUB_ADDRESS === undefined) {
   throw new Error('REACT_APP_HUB_ADDRESS environment variable is not defined');
@@ -71,15 +69,15 @@ class Connector {
       .catch((err) => document.write(err));
   };
 
-  public sendGetDevices = () => {
+  public sendGetDevices = ():void => {
     this.connection.send("GetDevices");
   };
 
-  public sendSubscribeCounter = (deviceId, processId, type, conterName, revision) => {
+  public sendSubscribeCounter = (deviceId:number, processId:number, type:CounterType, conterName:string, revision:number) => {
     this.connection.send("SubscribeCounter", deviceId, processId, type, conterName, revision);
   };
 
-  public sendUnsubscribeConuter = (deviceId, processId, type, counterName) => {
+  public sendUnsubscribeConuter = (deviceId:number, processId:number, type:CounterType, counterName:string) => {
     this.connection.send("UnsubscribeCounter", deviceId, processId, type, counterName);
   };
 

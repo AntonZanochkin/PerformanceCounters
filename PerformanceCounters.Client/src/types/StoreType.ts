@@ -26,9 +26,5 @@ export namespace StoreType {
       kernelTime?:number;
       sleepTime?:number;
     };
-  
-    // export interface CounterNamesByType {
-    //   [counterType: CounterType]: string[];
-    // }
   }
   
