@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./SideBar.css";
 import { useSelector, useDispatch } from "react-redux";
-import { selectDevices, setDevices, addDevice, addProcess, addCounterNames, updateCounters } from "../../Redux/DevicesSlice.ts";
+import { selectDevices, setDevices, addDevice, addProcess, addCounterNames, updateCounters } from "../../Redux/Device/DeviceSlice.ts";
 import { selectIsConnected, setIsConnected } from "../../Redux/signalRSlice.js";
 import DropdownMenu from "./DropdownMenu.js";
 import Connector from "../../API/SignalrConnection.ts";
@@ -20,7 +20,7 @@ export const SideBar = () => {
     connector.events.addCounterNames(dto => dispatch(addCounterNames(dto)));
     connector.events.updateCounters(dto => dispatch(updateCounters(dto)));
 
-    connector.connectStart(() => {
+    connector.startConnect(() => {
       dispatch(setIsConnected(true));
     });
   }, [connector]);

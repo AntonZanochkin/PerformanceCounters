@@ -3,7 +3,7 @@ import { animated, useSpring } from "react-spring";
 import { Spring } from "react-spring/renderprops";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId } from "../../Redux/uiSlice";
+import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId } from "../../Redux/Ui/UiSlice";
 
 function DropdownMenu(props) {
   let device = props.device;

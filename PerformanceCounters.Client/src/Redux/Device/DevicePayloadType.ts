@@ -1,7 +1,6 @@
-import { StoreType } from '../types/StoreType.ts';
-import { DtoType } from '../types/DtoType.ts';
+import { DtoType } from '../../types/DtoType.ts';
 
-export namespace PayloadType {
+export namespace DevicePayloadType {
   export interface AddDevice extends DtoType.AddDevice {
   }
   

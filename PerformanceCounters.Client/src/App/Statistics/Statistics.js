@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./Statistics.css";
 import { useLocation } from "react-router-dom";
-import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/uiSlice";
+import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/UiSlice.ts";
 import { useSelector, useDispatch } from "react-redux";
 import { selectDeviceAndProcessOrDefault } from "../../Redux/DevicesSlice.ts"
 import { Counter } from "./Counter/Counter.js";
