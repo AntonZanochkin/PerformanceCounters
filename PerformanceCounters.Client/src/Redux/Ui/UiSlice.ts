@@ -33,15 +33,15 @@ export const uiSlice = createSlice({
   extraReducers(builder) {},
 });
 
-export const selectActiveDeviceId = (state:UiSliceState) => {
+export const selectActiveDeviceId = (state:UiSliceState): number | undefined => {
   return state.activeDeviceId;
 };
 
-export const selectActiveProcessId = (state:UiSliceState) => {
+export const selectActiveProcessId = (state:UiSliceState) : number | undefined=> {
   return state.activeProcessId;
 };
 
-export const selectActiveCounterType = (state:UiSliceState) => {
+export const selectActiveCounterType = (state:UiSliceState) : CounterType | undefined=> {
   return state.activeConterType;
 };
 
