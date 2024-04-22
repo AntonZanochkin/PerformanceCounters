@@ -1,27 +1,30 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import "./Statistics.css";
 import { useLocation } from "react-router-dom";
-import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/UiSlice.ts";
+import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/Ui/UiSlice.ts";
 import { useSelector, useDispatch } from "react-redux";
-import { selectDeviceAndProcessOrDefault } from "../../Redux/DevicesSlice.ts"
+import { selectDeviceAndProcessOrDefault } from "../../Redux/Device/DeviceSlice.ts"
 import { Counter } from "./Counter/Counter.js";
 
-export const Statistics = () => {
+export const Statistics : React.FC = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
+
   const deviceIdString = searchParams.get("deviceId");
   const processIdString = searchParams.get("processId");
 
+  if(deviceIdString === null || processIdString === null)
+    throw new Error("Missing deviceId or processId");
+  
   const deviceId = parseInt(deviceIdString, 10);
   const processId = parseInt(processIdString, 10);
 
   const dispatch = useDispatch();
+  if (useSelector(selectActiveDeviceId) === undefined) dispatch(setActiveDeviceId({activeDeviceId:deviceId}));
+  if (useSelector(selectActiveProcessId) === undefined) dispatch(setActiveProcessId({activeProcessId:processId}));
+
   const activeCounterType = useSelector(selectActiveCounterType);
-
-  if (useSelector(selectActiveDeviceId) === undefined) dispatch(setActiveDeviceId(deviceId));
-  if (useSelector(selectActiveProcessId) === undefined) dispatch(setActiveProcessId(processId));
-
-  const {process} = useSelector(selectDeviceAndProcessOrDefault(deviceId, processId));
+  const {device, process} = useSelector(selectDeviceAndProcessOrDefault(deviceId, processId));
 
   const handleItemClick = useCallback(
     (type) => {
@@ -43,7 +46,7 @@ export const Statistics = () => {
             ))}
         </ul>
       </div>
-      <div>{activeCounterType && <Counter deviceId={deviceId} processId={processId} type={activeCounterType} counterNames={process.counterNamesByType[activeCounterType]} />}</div>
+      <div>{process && activeCounterType && <Counter deviceId={deviceId} processId={processId} type={activeCounterType} counterNames={process.counterNamesByType[activeCounterType]} />}</div>
     </div>
   );
 };

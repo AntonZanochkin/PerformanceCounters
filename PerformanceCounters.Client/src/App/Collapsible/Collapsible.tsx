@@ -9,7 +9,7 @@ type Props = {
 const Collapsible = (props:Props) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const toggle = () => {
+  const toggle = ():void => {
     setOpen(!open);
   };
 

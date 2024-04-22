@@ -3,6 +3,11 @@ import { StoreType } from '../../types/StoreType.ts';
 import { DevicePayloadType } from './DevicePayloadType.ts';
 import { CounterType, EnumDictionary } from '../../types/CounterType.ts';
 
+interface DeviceAndProcess {
+  device?: StoreType.Device;
+  process?: StoreType.Process;
+}
+
 export interface DeviceSliceState {
   devices: Array<StoreType.Device>;
 };
@@ -104,15 +109,15 @@ export const selectDeviceAndProcess = (deviceId: number, processId: number) => (
   return {device, process};
 };
 
-export const selectDeviceAndProcessOrDefault = (deviceId: number, processId: number) => (state: DeviceSliceState) => {
+export const selectDeviceAndProcessOrDefault = (deviceId: number, processId: number) => (state: DeviceSliceState): DeviceAndProcess => {
   
   const device = state.devices.find((x) => x.id === deviceId);
   if (device === undefined) 
-    return undefined;
+    return { device: undefined, process: undefined};
 
   const process = device.processes.find((x) => x.id === processId);
   if (process === undefined) 
-    return undefined;
+    return { device: undefined, process: undefined};
 
   return {device, process};
 };
