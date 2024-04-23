@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Statistics } from "./Statistics/Statistics.js";
 import { SideBar } from "./SideBar/SideBar.tsx";
 import { Provider } from "react-redux";
-import store from "../Redux/store.js";
+import  Store from "../Redux/Store.ts";
 
-export const App : React.FC = () => {
+export const App = () => {
   return (
     <div className="app">
-      <Provider store={store}>
+      <Provider store={Store}>
         <Router>
           <SideBar />
           <Routes>

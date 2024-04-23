@@ -1,8 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import devicesSlice from "./Device/DeviceSlice.ts";
-import deviceMiddleware from "./Device/deviceMiddleware.js";
 import uiSlice from "./Ui/UiSlice.ts";
-import signalRSlice from "./signalRSlice";
+import signalRSlice from "./SignalR/SignalRSlice.ts";
 
 export default configureStore({
   reducer: {

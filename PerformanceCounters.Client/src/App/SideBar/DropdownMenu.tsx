@@ -4,25 +4,30 @@ import { Spring } from "react-spring/renderprops";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId } from "../../Redux/Ui/UiSlice";
+import { StoreType } from '../../types/StoreType.ts';
 
-function DropdownMenu(props) {
-  let device = props.device;
+type Props = {
+  device:StoreType.Device
+};
 
-  let closedStyle = {
+function DropdownMenu(props:Props) {
+  const device = props.device;
+
+  const closedStyle = {
     height: 0,
   };
 
-  let openStyle = {
+  const openStyle = {
     height: "auto",
   };
 
   const activeDeviceId = useSelector(selectActiveDeviceId);
   const ativeProcessId = useSelector(selectActiveProcessId);
-  const activeDropDownMenu = activeDeviceId === device.id;
+  const IsActiveDropDownMenu = activeDeviceId === device.id;
 
   const dispatch = useDispatch();
   const handleMenuDropDownClick = (e) => {
-    dispatch(setActiveDeviceId(activeDeviceId == device.id ? -1 : device.id));
+    dispatch(setActiveDeviceId({activeDeviceId: activeDeviceId == device.id ? -1 : device.id}));
   };
 
   const handleLinkClick = (processId) => {
@@ -32,7 +37,7 @@ function DropdownMenu(props) {
   const menuDropDownContent = (
     <a
       // href="#s"
-      onClick={(e) => {
+      onClick={(e:React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         handleMenuDropDownClick(e);
       }}
     >
@@ -65,7 +70,7 @@ function DropdownMenu(props) {
   };
 
   const subMenuContent = (
-    <Spring from={openStyle} to={activeDropDownMenu ? openStyle : closedStyle}>
+    <Spring from={openStyle} to={IsActiveDropDownMenu ? openStyle : closedStyle}>
       {(props) => (
         <animated.div className="sidebar-submenu" style={props}>
           <ul> {renderProcessesItems()} </ul>
@@ -75,7 +80,7 @@ function DropdownMenu(props) {
   );
 
   return (
-    <li className={activeDropDownMenu ? "sidebar-dropdown active" : "sidebar-dropdown"}>
+    <li className={IsActiveDropDownMenu ? "sidebar-dropdown active" : "sidebar-dropdown"}>
       {" "}
       {menuDropDownContent}
       {subMenuContent}{" "}
