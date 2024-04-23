@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { VegaLite } from "react-vega";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCounters } from "../../../Redux/Device/DeviceSlice.ts";
-import { selectIsConnected } from "../../../Redux/signalRSlice.js";
+import { selectIsConnected } from "../../../Redux/SignalR/SignalRSlice.ts";
 import Connector from "../../../API/SignalrConnection.ts";
 import { integerSpec, stopwatchSpec, cpuTimeSpec, vegaLiteSpec } from "./VegaLiteSpec.js";
 import { CounterType } from "../../../types/CounterType.ts";

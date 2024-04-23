@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import Collapsible from "../../Collapsible/Collapsible.js";
 import "./Counter.css";
 import { Chart } from "../Chart/Chart.tsx";
+import { CounterType } from "../../../types/CounterType.ts";
 
-export const Counter = ({ deviceId, processId, type, counterNames }) => {
+type Props = {
+  deviceId: number;
+  processId: number;
+  type: CounterType;
+  counterNames: string[];
+};
+
+export const Counter = ({ deviceId, processId, type, counterNames }: Props) => {
   return (
-    <div className="counterDiv">
+    <div className="counter-div">
       {counterNames.map((name) => {
         return (
           <Collapsible key={deviceId + processId + name} label={name}>
