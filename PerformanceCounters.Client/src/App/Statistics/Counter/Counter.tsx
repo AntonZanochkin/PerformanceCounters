@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Collapsible from "../../Collapsible/Collapsible.js";
+import Collapsible from "../../Collapsible/Collapsible.tsx";
 import "./Counter.css";
 import { Chart } from "../Chart/Chart.tsx";
 import { CounterType } from "../../../types/CounterType.ts";

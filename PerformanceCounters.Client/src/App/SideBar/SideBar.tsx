@@ -3,7 +3,7 @@ import "./SideBar.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectDevices, setDevices, addDevice, addProcess, addCounterNames, updateCounters } from "../../Redux/Device/DeviceSlice.ts";
 import { selectIsConnected, setIsConnected } from "../../Redux/SignalR/SignalRSlice.ts";
-import DropdownMenu from "./DropdownMenu.js";
+import DropdownMenu from "./DropdownMenu.tsx";
 import Connector from "../../API/SignalrConnection.ts";
 
 export const SideBar = () => {

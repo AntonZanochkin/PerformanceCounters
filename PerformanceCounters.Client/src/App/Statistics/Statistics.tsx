@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/Ui/UiSlice.ts";
 import { useSelector, useDispatch } from "react-redux";
 import { selectDeviceAndProcessOrDefault } from "../../Redux/Device/DeviceSlice.ts"
-import { Counter } from "./Counter/Counter.js";
+import { Counter } from "./Counter/Counter.tsx";
 
 export const Statistics : React.FC = () => {
   const location = useLocation();
