@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "./SideBar.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { selectDevices, setDevices, addDevice, addProcess, addCounterNames, updateCounters } from "../../Redux/Device/DeviceSlice.ts";
 import { selectIsConnected, setIsConnected } from "../../Redux/SignalR/SignalRSlice.ts";
 import DropdownMenu from "./DropdownMenu.tsx";
 import Connector from "../../API/SignalrConnection.ts";
+import { StoreType } from '../../types/StoreType.ts';
+import { useAppSelector } from '../../Redux/Store.ts';
 
 export const SideBar = () => {
   const connector = Connector();
 
   const dispatch = useDispatch();
-  const devicesStore = useSelector(selectDevices());
-  const isConnected = useSelector(selectIsConnected());
+  const devices = useAppSelector(selectDevices);
+  const isConnected = useAppSelector(selectIsConnected);
 
   useEffect(() => {
     connector.events.addDevice(dto => dispatch(addDevice(dto)));
@@ -21,7 +23,7 @@ export const SideBar = () => {
     connector.events.updateCounters(dto => dispatch(updateCounters(dto)));
 
     connector.startConnect(() => {
-      dispatch(setIsConnected({isConnected:true}));
+      dispatch(setIsConnected(true));
     });
   }, [connector]);
 
@@ -35,8 +37,8 @@ export const SideBar = () => {
     </li>
   );
 
-  const renderDevices = () => {
-    return devicesStore.map((device) => <DropdownMenu device={device} key={device.id} />);
+  const renderDevices = (devices : StoreType.Device[] ) => {
+    return devices.map((device) => <DropdownMenu device={device} key={device.id} />);
   };
 
   return (
@@ -45,7 +47,7 @@ export const SideBar = () => {
         <div className=" sidebar-item sidebar-menu">
           <ul>
             {renderHeaderLi()}
-            {renderDevices()}
+            {renderDevices(devices)}
           </ul>
         </div>
       </div>

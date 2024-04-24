@@ -70,6 +70,7 @@ class Connector {
   };
 
   public sendGetDevices = ():void => {
+    console.log("sendGetDevices")
     this.connection.send("GetDevices");
   };
 

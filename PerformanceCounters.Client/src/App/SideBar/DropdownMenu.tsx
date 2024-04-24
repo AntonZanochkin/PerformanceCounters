@@ -2,9 +2,10 @@ import React from "react";
 import { animated, useSpring } from "react-spring";
 import { Spring } from "react-spring/renderprops";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId } from "../../Redux/Ui/UiSlice.ts";
 import { StoreType } from '../../types/StoreType.ts';
+import { useAppSelector } from "../../Redux/Store.ts";
 
 type Props = {
   device:StoreType.Device
@@ -21,16 +22,16 @@ function DropdownMenu(props:Props) {
     height: "auto",
   };
 
-  const activeDeviceId = useSelector(selectActiveDeviceId);
-  const ativeProcessId = useSelector(selectActiveProcessId);
+  const activeDeviceId = useAppSelector(selectActiveDeviceId);
+  const ativeProcessId = useAppSelector(selectActiveProcessId);
   const IsActiveDropDownMenu = activeDeviceId === device.id;
 
   const dispatch = useDispatch();
   const handleMenuDropDownClick = (e) => {
-    dispatch(setActiveDeviceId({activeDeviceId: activeDeviceId == device.id ? -1 : device.id}));
+    dispatch(setActiveDeviceId(activeDeviceId == device.id ? -1 : device.id));
   };
 
-  const handleLinkClick = (processId) => {
+  const handleLinkClick = (processId:number) => {
     dispatch(setActiveProcessId(processId));
   };
 

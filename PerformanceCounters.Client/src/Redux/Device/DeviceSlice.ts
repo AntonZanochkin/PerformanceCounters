@@ -1,23 +1,19 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StoreType } from '../../types/StoreType.ts';
-import { DevicePayloadType } from './DevicePayloadType.ts';
+import { DevicePayloadType } from './ServerDataPayloadType.ts';
 import { CounterType, EnumDictionary } from '../../types/CounterType.ts';
+import { RootState } from "../Store.ts";
 
-interface DeviceAndProcess {
-  device?: StoreType.Device;
-  process?: StoreType.Process;
-}
-
-export interface DeviceSliceState {
+export interface DeviceState {
   devices: Array<StoreType.Device>;
 };
 
-const initialState: DeviceSliceState = {
+const initialState: DeviceState = {
   devices: [],
 }
 
-export const devicesSlice = createSlice({
-  name: "devices",
+export const DeviceSlice = createSlice({
+  name: "serverData",
   initialState: initialState,
   reducers: {
     addDevice: (state, action: PayloadAction<DevicePayloadType.AddDevice>) => {
@@ -41,7 +37,7 @@ export const devicesSlice = createSlice({
 
     addProcess: (state, action: PayloadAction<DevicePayloadType.AddProcess>) => {
       const { deviceId, processId, processName } = action.payload;
-      const { device } = findDeviceAndProcess(state, deviceId, processId);
+      const { device } = findDeviceAndProcess(state.devices, deviceId, processId);
 
       const counterNamesByType: EnumDictionary<CounterType, string[]> = {
         [CounterType.Integer]: [],
@@ -54,7 +50,7 @@ export const devicesSlice = createSlice({
 
     addCounterNames: (state, action: PayloadAction<DevicePayloadType.AddCounterNames>) => {
       const { deviceId, processId, counterType, newCounterNames } = action.payload;
-      const { process } = findDeviceAndProcess(state, deviceId, processId);
+      const { process } = findDeviceAndProcess(state.devices, deviceId, processId);
 
       if (!process.counterNamesByType[counterType]) process.counterNamesByType[counterType] = [];
       process.counterNamesByType[counterType].push(...newCounterNames);
@@ -62,7 +58,7 @@ export const devicesSlice = createSlice({
 
     updateCounters: (state, action:PayloadAction<DevicePayloadType.UpdateCounters>) => {
       const { deviceId, processId, counters } = action.payload;
-      const { process } = findDeviceAndProcess(state, deviceId, processId);
+      const { process } = findDeviceAndProcess(state.devices, deviceId, processId);
 
       if (!process.counters) process.counters = [];
 
@@ -78,9 +74,56 @@ export const devicesSlice = createSlice({
   extraReducers(builder) {},
 });
 
-function findDeviceAndProcess(state:DeviceSliceState, deviceId: number, processId: number) {
+export const { setDevices, addDevice, addProcess, addCounterNames, updateCounters } = DeviceSlice.actions;
+export default DeviceSlice.reducer;
+
+//Selectors
+
+type Selector<S> = (state: RootState) => S;
+
+export const selectDevices = 
+createSelector(
+  [(state: RootState) => state.deviceState.devices], 
+  (devices) => devices
+);
+
+export const selectCounters = (deviceId: number, processId: number, counterType: string, counterName:string, revision:number): Selector<StoreType.Counter[]> =>
+  createSelector(
+    [(state: RootState) => state.deviceState.devices],
+    (devices) => {
+      const { process } = findDeviceAndProcess(devices, deviceId, processId);
+      return process.counters?.filter((x) => x.type === counterType && x.name === counterName && x.id > revision);
+    }
+  );
+
+export const selectDeviceAndProcess = (deviceId: number, processId: number): Selector<{device:StoreType.Device, process:StoreType.Process}> =>
+  createSelector(
+    [(state: RootState) => state.deviceState.devices],
+    (devices) => {
+      const { device, process } = findDeviceAndProcess(devices, deviceId, processId);
+      return {device, process};
+    }
+  );
+
+export const selectDeviceAndProcessOrDefault = (deviceId: number, processId: number) : Selector<{device:StoreType.Device | undefined, process:StoreType.Process | undefined}> =>
+  createSelector(
+    [(state: RootState) => state.deviceState.devices],
+    (devices) => {
+      const device = devices.find((x) => x.id === deviceId);
+      if (device === undefined) 
+        return { device: undefined, process: undefined};
+    
+      const process = device.processes.find((x) => x.id === processId);
+      if (process === undefined) 
+        return { device: undefined, process: undefined};
+
+      return {device, process};
+    }
+  );
+
+function findDeviceAndProcess(devices: StoreType.Device[], deviceId: number, processId: number) {
   
-  const device = state.devices.find((x) => x.id === deviceId);
+  const device = devices.find((x) => x.id === deviceId);
   if (!device) {
     throw new Error(`Device with ID ${deviceId} not found`);
   }
@@ -92,35 +135,3 @@ function findDeviceAndProcess(state:DeviceSliceState, deviceId: number, processI
 
   return { device, process };
 }
-
-export const selectCounters = (deviceId: number, processId: number, counterType: string, counterName:string, revision:number) => (state : DeviceSliceState) => {
-  
-  const { process } = findDeviceAndProcess(state, deviceId, processId);
-  return process.counters?.filter((x) => x.type === counterType && x.name === counterName && x.id > revision);
-};
-
-export const selectDevices = () => (state: DeviceSliceState) => {
-  return state.devices;
-};
-
-export const selectDeviceAndProcess = (deviceId: number, processId: number) => (state: DeviceSliceState) => {
-  
-  const { device, process } = findDeviceAndProcess(state, deviceId, processId);
-  return {device, process};
-};
-
-export const selectDeviceAndProcessOrDefault = (deviceId: number, processId: number) => (state: DeviceSliceState): DeviceAndProcess => {
-  
-  const device = state.devices.find((x) => x.id === deviceId);
-  if (device === undefined) 
-    return { device: undefined, process: undefined};
-
-  const process = device.processes.find((x) => x.id === processId);
-  if (process === undefined) 
-    return { device: undefined, process: undefined};
-
-  return {device, process};
-};
-
-export const { setDevices, addDevice, addProcess, addCounterNames, updateCounters } = devicesSlice.actions;
-export default devicesSlice.reducer;

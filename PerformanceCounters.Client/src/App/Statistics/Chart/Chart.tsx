@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { VegaLite } from "react-vega";
-import { useSelector, useDispatch } from "react-redux";
 import { selectCounters } from "../../../Redux/Device/DeviceSlice.ts";
 import { selectIsConnected } from "../../../Redux/SignalR/SignalRSlice.ts";
 import Connector from "../../../API/SignalrConnection.ts";
 import { integerSpec, stopwatchSpec, cpuTimeSpec, vegaLiteSpec } from "./VegaLiteSpec.js";
 import { CounterType } from "../../../types/CounterType.ts";
+import { useAppSelector } from "../../../Redux/Store.ts";
 
 type Props = {
   deviceId: number;
@@ -41,12 +41,10 @@ export const Chart = ({ deviceId, processId, type, counterName }: Props) => {
 
   const componentRef = useRef<HTMLDivElement>(null);
 
-  const dispatch = useDispatch();
-
-  const isConnected = useSelector(selectIsConnected());
+  const isConnected = useAppSelector(selectIsConnected);
   
   const countersStateRef = useRef<{ counters: ViewCounter[], revision: number }>({ counters: [], revision: -1 });
-  const countersStore = useSelector(selectCounters(deviceId, processId, type, counterName, countersStateRef.current.revision));
+  const countersStore = useAppSelector(selectCounters(deviceId, processId, type, counterName, countersStateRef.current.revision));
   const revision = countersStore && countersStore.length > 0 ? Math.max(...countersStore.map((c) => c.id)) : -1;
 
   type ViewCounter = {
@@ -63,8 +61,7 @@ export const Chart = ({ deviceId, processId, type, counterName }: Props) => {
     if (revision === -1) return;
 
     const newCounters = countersStore.map((c) => ({ ...c }));
-
-    console.log(type);
+    
     switch (type) {
       case CounterType.Stopwatch:
       case CounterType.Integer: {
@@ -83,7 +80,6 @@ export const Chart = ({ deviceId, processId, type, counterName }: Props) => {
     }
 
     countersStateRef.current.revision = revision;
-    console.log(countersStateRef.current.counters);
   }, [revision]);
 
   //Subscribe

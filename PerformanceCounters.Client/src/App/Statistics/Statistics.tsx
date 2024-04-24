@@ -2,11 +2,12 @@ import React, { useCallback } from "react";
 import "./Statistics.css";
 import { useLocation } from "react-router-dom";
 import { selectActiveDeviceId, setActiveDeviceId, selectActiveProcessId, setActiveProcessId, selectActiveCounterType, setActiveCounterType } from "../../Redux/Ui/UiSlice.ts";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { selectDeviceAndProcessOrDefault } from "../../Redux/Device/DeviceSlice.ts"
 import { Counter } from "./Counter/Counter.tsx";
+import { useAppSelector } from "../../Redux/Store.ts";
 
-export const Statistics : React.FC = () => {
+export const Statistics = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -20,11 +21,11 @@ export const Statistics : React.FC = () => {
   const processId = parseInt(processIdString, 10);
 
   const dispatch = useDispatch();
-  if (useSelector(selectActiveDeviceId) === undefined) dispatch(setActiveDeviceId({activeDeviceId:deviceId}));
-  if (useSelector(selectActiveProcessId) === undefined) dispatch(setActiveProcessId({activeProcessId:processId}));
+  if (useAppSelector(selectActiveDeviceId) === undefined) dispatch(setActiveDeviceId(deviceId));
+  if (useAppSelector(selectActiveProcessId) === undefined) dispatch(setActiveProcessId(processId));
 
-  const activeCounterType = useSelector(selectActiveCounterType);
-  const {device, process} = useSelector(selectDeviceAndProcessOrDefault(deviceId, processId));
+  const activeCounterType = useAppSelector(selectActiveCounterType);
+  const {device, process} = useAppSelector(selectDeviceAndProcessOrDefault(deviceId, processId));
 
   const handleItemClick = useCallback(
     (type) => {
@@ -34,7 +35,7 @@ export const Statistics : React.FC = () => {
   );
 
   return (
-    <div className="statisticsDiv">
+    <div className="statistics-div">
       <div className="navigation-panel">
         <ul className="ul">
           {process &&

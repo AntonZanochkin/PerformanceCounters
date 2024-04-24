@@ -1,28 +1,32 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SignalRPayloadType } from "./SignalRPayloadType.ts";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../Store.ts";
 
-export interface SignalRSliceState {
+export interface SignalRState {
   isConnected: boolean;
 };
 
-const initialState: SignalRSliceState = {
+const initialState: SignalRState = {
   isConnected: false,
 }
 
-export const signalRSlice = createSlice({
+export const SignalRSlice = createSlice({
   name: "signalR",
   initialState: initialState,
   reducers: {
-    setIsConnected: (state, action:PayloadAction<SignalRPayloadType.SetIsConnected>) => {
-      state.isConnected = action.payload.isConnected;
+    setIsConnected: (state, action:PayloadAction<boolean>) => {
+      state.isConnected = action.payload;
     },
   },
   extraReducers(builder) {},
 });
 
-export const selectIsConnected = () => (state:SignalRSliceState): boolean => {
-  return state.isConnected;
-};
+export const { setIsConnected } = SignalRSlice.actions;
+export default SignalRSlice.reducer;
 
-export const { setIsConnected } = signalRSlice.actions;
-export default signalRSlice.reducer;
+//Selectors
+
+export const selectIsConnected = 
+createSelector(
+  [(state: RootState) => state.signalRState], 
+  (signalRState) => signalRState.isConnected
+);
