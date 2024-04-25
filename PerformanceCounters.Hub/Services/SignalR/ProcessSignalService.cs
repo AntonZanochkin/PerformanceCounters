@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using PerformanceCounters.Hub.Dto.Counter;
 using PerformanceCounters.Hub.Dto.Process;
 using PerformanceCounters.Hub.SignalR.Hubs;
 
@@ -13,7 +14,7 @@ namespace PerformanceCounters.Hub.Services.SignalR
     }
     public async Task AddProcessAsync(int deviceId, int processId, string processName)
     {
-      await _hubContext.Clients.All.SendAsync("addProcess", deviceId, processId, processName);
+      await _hubContext.Clients.All.SendAsync("addProcess", new AddProcessDto {DeviceId = deviceId, ProcessId = processId, ProcessName = processName });
     }
 
     public async Task DeleteProcessAsync(int processId)
@@ -23,7 +24,8 @@ namespace PerformanceCounters.Hub.Services.SignalR
 
     public async Task AddCounterNames(int deviceId, int processId, CounterType counterType, List<string> newCounterNames)
     {
-      await _hubContext.Clients.All.SendAsync("addCounterNames", deviceId, processId, counterType, newCounterNames);
+      var dto = new AddCounterNamesDto { DeviceId = deviceId, ProcessId = processId, CounterType = counterType, NewCounterNames = newCounterNames };
+      await _hubContext.Clients.All.SendAsync("addCounterNames", dto);
     }
   }
 }

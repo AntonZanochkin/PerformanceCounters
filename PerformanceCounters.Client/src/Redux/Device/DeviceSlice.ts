@@ -13,7 +13,7 @@ const initialState: DeviceState = {
 }
 
 export const DeviceSlice = createSlice({
-  name: "serverData",
+  name: "devices",
   initialState: initialState,
   reducers: {
     addDevice: (state, action: PayloadAction<DevicePayloadType.AddDevice>) => {
@@ -37,7 +37,13 @@ export const DeviceSlice = createSlice({
 
     addProcess: (state, action: PayloadAction<DevicePayloadType.AddProcess>) => {
       const { deviceId, processId, processName } = action.payload;
-      const { device } = findDeviceAndProcess(state.devices, deviceId, processId);
+
+      const device = state.devices.find((x) => x.id === deviceId);
+      if (!device) {
+        const error = `Device with ID ${deviceId} not found`;
+        console.error(error)
+        throw new Error(error);
+      }
 
       const counterNamesByType: EnumDictionary<CounterType, string[]> = {
         [CounterType.Integer]: [],
@@ -115,7 +121,7 @@ export const selectDeviceAndProcessOrDefault = (deviceId: number, processId: num
     
       const process = device.processes.find((x) => x.id === processId);
       if (process === undefined) 
-        return { device: undefined, process: undefined};
+        return { device: device, process: undefined};
 
       return {device, process};
     }
@@ -125,12 +131,16 @@ function findDeviceAndProcess(devices: StoreType.Device[], deviceId: number, pro
   
   const device = devices.find((x) => x.id === deviceId);
   if (!device) {
-    throw new Error(`Device with ID ${deviceId} not found`);
+    const error = `Device with ID ${deviceId} not found`;
+    console.error(error)
+    throw new Error(error);
   }
 
   const process = device?.processes.find((x) => x.id === processId);
   if (!process) {
-    throw new Error(`Process with ID ${processId} not found`);
+    const error = `Process with ID ${processId} not found`
+    console.error(error);
+    throw new Error(error);
   }
 
   return { device, process };

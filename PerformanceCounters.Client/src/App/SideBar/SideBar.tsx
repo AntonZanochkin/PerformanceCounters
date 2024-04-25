@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./SideBar.css";
 import { useDispatch } from "react-redux";
 import { selectDevices, setDevices, addDevice, addProcess, addCounterNames, updateCounters } from "../../Redux/Device/DeviceSlice.ts";
